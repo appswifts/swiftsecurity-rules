@@ -1,0 +1,112 @@
+{
+    "version": "1.0.0",
+    "updated": "2026-03-15",
+    "description": "SwiftSecurity WAF rules - OWASP CRS based",
+    "rules": [
+        {
+            "id": "SQLI-001",
+            "name": "SQL Injection — Union Select",
+            "category": "sqli",
+            "severity": "critical",
+            "pattern": "/(?:union\\s+(?:all\\s+)?select|select\\s+.*\\s+from\\s+information_schema)/is"
+        },
+        {
+            "id": "SQLI-002",
+            "name": "SQL Injection — Boolean Based",
+            "category": "sqli",
+            "severity": "critical",
+            "pattern": "/(?:'\\s*(?:or|and)\\s+['\\ d]+=[\\'\\d]+|\"\\s*(?:or|and)\\s+[\"\\d]+=[\"\\d]+)/is"
+        },
+        {
+            "id": "SQLI-003",
+            "name": "SQL Injection — Stacked Queries",
+            "category": "sqli",
+            "severity": "critical",
+            "pattern": "/;\\s*(?:drop|delete|update|insert|alter|create|exec|execute)\\s+/is"
+        },
+        {
+            "id": "SQLI-004",
+            "name": "SQL Injection — Time-Based Blind",
+            "category": "sqli",
+            "severity": "critical",
+            "pattern": "/(?:sleep\\s*\\(\\s*\\d+\\s*\\)|benchmark\\s*\\(\\s*\\d+|waitfor\\s+delay)/is"
+        },
+        {
+            "id": "XSS-001",
+            "name": "XSS — Script Tag Injection",
+            "category": "xss",
+            "severity": "critical",
+            "pattern": "/<\\s*script[^>]*>|<\\s*\\/\\s*script\\s*>/is"
+        },
+        {
+            "id": "XSS-002",
+            "name": "XSS — Event Handler Injection",
+            "category": "xss",
+            "severity": "high",
+            "pattern": "/\\b(?:on(?:mouse(?:over|out|down|up)|click|error|load|unload|submit|focus|blur|change|keydown|keyup))\\s*=/is"
+        },
+        {
+            "id": "XSS-003",
+            "name": "XSS — JavaScript Protocol",
+            "category": "xss",
+            "severity": "critical",
+            "pattern": "/(?:javascript|vbscript|livescript|data)\\s*:/is"
+        },
+        {
+            "id": "XSS-004",
+            "name": "XSS — Dangerous HTML Elements",
+            "category": "xss",
+            "severity": "high",
+            "pattern": "/<\\s*(?:svg|object|embed|iframe|applet|form)\\b[^>]*>/is"
+        },
+        {
+            "id": "RFI-001",
+            "name": "Remote File Inclusion",
+            "category": "rfi",
+            "severity": "critical",
+            "pattern": "/(?:https?|ftp|php|data|expect|input|zip|phar)\\s*:\\/\\//i"
+        },
+        {
+            "id": "LFI-001",
+            "name": "Directory Traversal",
+            "category": "lfi",
+            "severity": "critical",
+            "pattern": "/(?:\\.\\.[\\\\/]){2,}|(?:\\.\\.[\\\\/])(?:etc|proc|var|usr|home|tmp)[\\\\/]/i"
+        },
+        {
+            "id": "LFI-002",
+            "name": "Sensitive File Access",
+            "category": "lfi",
+            "severity": "critical",
+            "pattern": "/(?:\\/etc\\/(?:passwd|shadow|hosts)|\\/proc\\/self|wp-config\\.php|\\.env|\\.htaccess)/i"
+        },
+        {
+            "id": "CMDI-001",
+            "name": "Shell Command Injection",
+            "category": "cmdi",
+            "severity": "critical",
+            "pattern": "/(?:;\\s*(?:cat|ls|id|whoami|wget|curl|bash|sh|python|perl)\\s|`[^`]+`|\\$\\([^)]+\\))/i"
+        },
+        {
+            "id": "PHPI-001",
+            "name": "PHP Code Injection",
+            "category": "code_injection",
+            "severity": "critical",
+            "pattern": "/(?:(?:eval|assert|preg_replace\\s*\\(\\s*['\"]\\//|create_function|call_user_func)\\s*\\()/is"
+        },
+        {
+            "id": "XXE-001",
+            "name": "XML External Entity Injection",
+            "category": "xxe",
+            "severity": "critical",
+            "pattern": "/<!(?:DOCTYPE|ENTITY)\\s[^>]*(?:SYSTEM|PUBLIC)\\s/is"
+        },
+        {
+            "id": "WP-001",
+            "name": "WP Config Access",
+            "category": "wp_specific",
+            "severity": "critical",
+            "pattern": "/wp-config\\.(php|bak|old|txt|save|swp)/i"
+        }
+    ]
+}

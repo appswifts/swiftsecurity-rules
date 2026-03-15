@@ -1,0 +1,91 @@
+name: Update Security Rules
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Every day at midnight UTC
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest WordPress version
+        id: wp_version
+        run: |
+          WP_VERSION=$(curl -s https://api.wordpress.org/core/version-check/1.7/ | python3 -c "import sys,json; print(json.load(sys.stdin)['offers'][0]['version'])")
+          echo "version=$WP_VERSION" >> $GITHUB_OUTPUT
+          echo "WordPress version: $WP_VERSION"
+
+      - name: Fetch core checksums from WordPress.org
+        run: |
+          WP_VERSION="${{ steps.wp_version.outputs.version }}"
+          CHECKSUMS=$(curl -s "https://api.wordpress.org/core/checksums/1.0/?version=${WP_VERSION}&locale=en_US")
+          
+          # Build our checksums JSON
+          python3 << 'EOF'
+          import json, sys
+          from datetime import date
+          
+          with open('/dev/stdin') as f:
+              pass
+          
+          import urllib.request
+          url = f"https://api.wordpress.org/core/checksums/1.0/?version=${{ steps.wp_version.outputs.version }}&locale=en_US"
+          response = urllib.request.urlopen(url)
+          data = json.loads(response.read())
+          
+          output = {
+              "version": f"1.0.0-wp{data.get('checksums', {}) and '${{ steps.wp_version.outputs.version }}'}",
+              "updated": str(date.today()),
+              "description": "WordPress core file checksums",
+              "wp_version": "${{ steps.wp_version.outputs.version }}",
+              "checksums": data.get("checksums", {})
+          }
+          
+          with open("core-checksums.json", "w") as f:
+              json.dump(output, f, indent=2)
+          
+          count = len(output["checksums"])
+          print(f"Updated {count} checksums for WP {output['wp_version']}")
+          EOF
+
+      - name: Update version timestamps
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          
+          # Update malware-signatures.json timestamp
+          if [ -f malware-signatures.json ]; then
+            python3 -c "
+          import json
+          with open('malware-signatures.json', 'r') as f:
+              data = json.load(f)
+          data['updated'] = '$TODAY'
+          with open('malware-signatures.json', 'w') as f:
+              json.dump(data, f, indent=4)
+          "
+          fi
+          
+          # Update waf-rules.json timestamp
+          if [ -f waf-rules.json ]; then
+            python3 -c "
+          import json
+          with open('waf-rules.json', 'r') as f:
+              data = json.load(f)
+          data['updated'] = '$TODAY'
+          with open('waf-rules.json', 'w') as f:
+              json.dump(data, f, indent=4)
+          "
+          fi
+
+      - name: Commit and push updates
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git diff --staged --quiet || git commit -m "Daily rule update - $(date +%Y-%m-%d)"
+          git push

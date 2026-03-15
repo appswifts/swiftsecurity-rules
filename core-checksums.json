@@ -1,0 +1,8 @@
+{
+    "version": "1.0.0",
+    "updated": "2026-03-15",
+    "description": "WordPress core file checksums - fetched from api.wordpress.org",
+    "wp_version": "6.7",
+    "note": "This file is auto-updated by GitHub Actions. Checksums are sourced from api.wordpress.org/core/checksums/",
+    "checksums": {}
+}
