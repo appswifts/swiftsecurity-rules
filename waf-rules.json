@@ -1,60 +1,60 @@
 {
     "version": "1.0.0",
-    "updated": "2026-03-15",
+    "updated": "2026-03-23",
     "description": "SwiftSecurity WAF rules - OWASP CRS based",
     "rules": [
         {
             "id": "SQLI-001",
-            "name": "SQL Injection — Union Select",
+            "name": "SQL Injection \u2014 Union Select",
             "category": "sqli",
             "severity": "critical",
             "pattern": "/(?:union\\s+(?:all\\s+)?select|select\\s+.*\\s+from\\s+information_schema)/is"
         },
         {
             "id": "SQLI-002",
-            "name": "SQL Injection — Boolean Based",
+            "name": "SQL Injection \u2014 Boolean Based",
             "category": "sqli",
             "severity": "critical",
             "pattern": "/(?:'\\s*(?:or|and)\\s+['\\ d]+=[\\'\\d]+|\"\\s*(?:or|and)\\s+[\"\\d]+=[\"\\d]+)/is"
         },
         {
             "id": "SQLI-003",
-            "name": "SQL Injection — Stacked Queries",
+            "name": "SQL Injection \u2014 Stacked Queries",
             "category": "sqli",
             "severity": "critical",
             "pattern": "/;\\s*(?:drop|delete|update|insert|alter|create|exec|execute)\\s+/is"
         },
         {
             "id": "SQLI-004",
-            "name": "SQL Injection — Time-Based Blind",
+            "name": "SQL Injection \u2014 Time-Based Blind",
             "category": "sqli",
             "severity": "critical",
             "pattern": "/(?:sleep\\s*\\(\\s*\\d+\\s*\\)|benchmark\\s*\\(\\s*\\d+|waitfor\\s+delay)/is"
         },
         {
             "id": "XSS-001",
-            "name": "XSS — Script Tag Injection",
+            "name": "XSS \u2014 Script Tag Injection",
             "category": "xss",
             "severity": "critical",
             "pattern": "/<\\s*script[^>]*>|<\\s*\\/\\s*script\\s*>/is"
         },
         {
             "id": "XSS-002",
-            "name": "XSS — Event Handler Injection",
+            "name": "XSS \u2014 Event Handler Injection",
             "category": "xss",
             "severity": "high",
             "pattern": "/\\b(?:on(?:mouse(?:over|out|down|up)|click|error|load|unload|submit|focus|blur|change|keydown|keyup))\\s*=/is"
         },
         {
             "id": "XSS-003",
-            "name": "XSS — JavaScript Protocol",
+            "name": "XSS \u2014 JavaScript Protocol",
             "category": "xss",
             "severity": "critical",
             "pattern": "/(?:javascript|vbscript|livescript|data)\\s*:/is"
         },
         {
             "id": "XSS-004",
-            "name": "XSS — Dangerous HTML Elements",
+            "name": "XSS \u2014 Dangerous HTML Elements",
             "category": "xss",
             "severity": "high",
             "pattern": "/<\\s*(?:svg|object|embed|iframe|applet|form)\\b[^>]*>/is"
