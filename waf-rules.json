@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "updated": "2026-04-21",
+    "updated": "2026-04-22",
     "description": "SwiftSecurity WAF rules - OWASP CRS based",
     "rules": [
         {
